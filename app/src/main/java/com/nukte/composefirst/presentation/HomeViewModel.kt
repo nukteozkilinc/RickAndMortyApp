@@ -1,10 +1,8 @@
 package com.nukte.composefirst.presentation
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nukte.composefirst.data.CharacterDataSource
-import com.nukte.composefirst.data.CharacterDataSourceImpl
 import com.nukte.composefirst.model.Characters
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
