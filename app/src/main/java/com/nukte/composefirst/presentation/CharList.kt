@@ -21,11 +21,12 @@ interface CharList {
     companion object{
         @Composable
         fun Content(character : Characters) {
-            Item(character)
+            //Item(character)
         }
     }
 }
 
+/*
 @Composable
 fun ItemImage(image : Characters, modifier : Modifier){
     Image(
@@ -36,7 +37,8 @@ fun ItemImage(image : Characters, modifier : Modifier){
     )
 }
 
-
+*/
+/*
 @Composable
 fun Item(character : Characters){
     Card(
@@ -48,14 +50,14 @@ fun Item(character : Characters){
         androidx.constraintlayout.compose.ConstraintLayout {
             val (image, column) = createRefs()
 
-            ItemImage(image = character, modifier = Modifier
+            /*ItemImage(image = character, modifier = Modifier
                 .padding(top = 8.dp)
                 .constrainAs(image) {
                     top.linkTo(parent.top)
                     centerHorizontallyTo(parent)
                 }
                 .size(48.dp)
-            )
+            )*/
             Column(
                 modifier = Modifier
                     .padding(8.dp)
@@ -82,7 +84,9 @@ fun Item(character : Characters){
             }
         }
     }
-}
+
+
+}*/
 
 
 

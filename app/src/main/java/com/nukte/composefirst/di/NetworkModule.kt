@@ -32,7 +32,7 @@ object NetworkModule {
     fun provideRetrofit(okHttp : OkHttpClient) : Retrofit=
         Retrofit.Builder()
             .client(okHttp)
-            .baseUrl(RickMortyApi.BASE_URL)
+            .baseUrl("https://rickandmortyapi.com/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

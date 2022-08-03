@@ -1,16 +1,18 @@
 plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
+    alias libs.plugins.android.application
+    alias libs.plugins.kotlin.android
+    alias libs.plugins.hilt.plugin
+    alias libs.plugins.kotlin.kapt
+    alias libs.plugins.kotlin.serialization
 }
 
 android {
+    namespace 'com.nukte.composefirst'
     compileSdk 32
 
     defaultConfig {
         applicationId "com.nukte.composefirst"
-        minSdk 23
+        minSdk 24
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -28,69 +30,86 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
     }
     buildFeatures {
         compose true
     }
+
     composeOptions {
-        kotlinCompilerExtensionVersion compose_version
+        kotlinCompilerExtensionVersion '1.2.0-rc02'
     }
+
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
-            excludes += 'META-INF/gradle/incremental.annotation.processors'
         }
     }
 }
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.4.2'
-    //noinspection GradleDependency
-    implementation "androidx.compose.ui:ui:$compose_version"
-    //noinspection GradleDependency
-    implementation "androidx.compose.material:material:$compose_version"
-    //noinspection GradleDependency
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
-    implementation 'androidx.activity:activity-compose:1.5.1'
-    implementation 'com.google.android.gms:play-services-tagmanager-v4-impl:18.0.1'
-    implementation "androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha03"
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    //noinspection GradleDependency
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.1.0-beta01"
-    //noinspection GradleDependency
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
-    //noinspection GradleDependency
-    implementation 'androidx.ui:ui-layout:0.1.0-dev07'
-    //noinspection GradleDependency
-    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+    implementation libs.androidx.lifecycle.viewmodel.ktx
+    implementation libs.androidx.lifecycle.runtime
+    implementation libs.androidx.activity.compose
+    api libs.androidx.work.runtime
 
-    //retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation libs.compose.foundation.foundation
+    implementation libs.compose.foundation.layout
+    implementation libs.compose.material.material
+    implementation libs.compose.animation.animation
+    implementation libs.compose.ui.tooling
 
-    //Serialization
-    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2'
+    implementation libs.timber
 
-    //Dagger - Hilt
-    kapt 'androidx.hilt:hilt-compiler:1.0.0'
-    kapt 'com.google.dagger:hilt-compiler:2.42'
-    implementation 'com.google.dagger:hilt-android:2.42'
+    implementation libs.kotlin.stdlib
 
-    //Okhttp
-    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.7'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
+    implementation libs.kotlin.coroutines.core
+    implementation libs.kotlin.coroutines.android
+    implementation libs.retrofit.retrofit
+    implementation libs.retrofit.gsonConverter
+    implementation libs.retrofit.mock
+    implementation libs.retrofit.moshiConverter
+    implementation libs.moshi.core
+    implementation libs.moshi.kotlin
+    implementation libs.moshi.adapter
+    implementation libs.hilt.library
+    implementation libs.androidx.hilt.compose
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3'
+    kapt libs.hilt.compiler
 
-    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
+
+    implementation libs.okhttp.okhttp
+    implementation libs.okhttp.loggingInterceptor
+
+    implementation libs.bundles.room
+    kapt libs.room.compiler
+
+    implementation libs.androidx.hilt.work
+    kapt libs.androidx.hilt.compiler
+
+    implementation libs.czerwinski.android.hilt.extension
+    kapt libs.czerwinski.android.hilt.processor
+
+    testImplementation libs.junit
+    testImplementation libs.robolectric
+    testImplementation libs.mockK
+    testImplementation libs.androidx.archCoreTesting
+    testImplementation libs.androidx.test.core
+    testImplementation libs.androidx.test.junit
+    testImplementation libs.room.testing
+    testImplementation libs.truth
+    testImplementation libs.turbine
+    testImplementation libs.kotlin.coroutines.test
+    testImplementation libs.hilt.testing
+    testImplementation libs.kotlin.coroutines.android
+    testImplementation libs.okhttp.mockwebserver
+    androidTestImplementation libs.compose.ui.test
+    debugImplementation libs.compose.ui.manifest
 
 
 }
