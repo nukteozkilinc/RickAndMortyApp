@@ -14,6 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
 import com.nukte.composefirst.model.Characters
 
 interface CharList {
@@ -21,24 +22,23 @@ interface CharList {
     companion object{
         @Composable
         fun Content(character : Characters) {
-            //Item(character)
+            Item(character)
         }
     }
 }
 
-/*
+
 @Composable
 fun ItemImage(image : Characters, modifier : Modifier){
     Image(
-        painter = painterResource(id = image.image),
+        painter = rememberAsyncImagePainter(image.image),
         contentDescription = null,
         contentScale = ContentScale.Crop,// en/boy oranını koruyarak boyutu ayarlar
         modifier = modifier
     )
 }
 
-*/
-/*
+
 @Composable
 fun Item(character : Characters){
     Card(
@@ -50,14 +50,14 @@ fun Item(character : Characters){
         androidx.constraintlayout.compose.ConstraintLayout {
             val (image, column) = createRefs()
 
-            /*ItemImage(image = character, modifier = Modifier
+            ItemImage(image = character, modifier = Modifier
                 .padding(top = 8.dp)
                 .constrainAs(image) {
-                    top.linkTo(parent.top)
+                    start.linkTo(column.end)
                     centerHorizontallyTo(parent)
                 }
                 .size(48.dp)
-            )*/
+            )
             Column(
                 modifier = Modifier
                     .padding(8.dp)
@@ -69,25 +69,14 @@ fun Item(character : Characters){
                     }
                     .animateContentSize()
             ) {
-                /* if(isExpanded){*/
-                Text(text = character.name, fontWeight = FontWeight.SemiBold, fontSize = 16.sp)
-               /* Text(
-                    text = movie.description,
-                    fontSize = 12.sp,
-                    modifier = Modifier.padding(end = 16.dp),
-                    maxLines = 6
-                )*/
-                /*}else{
-                    Text(text = movie.title, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                    Text(text = movie.description, maxLines = 2)
-                }*/
+                character.name?.let { Text(text = it, fontWeight = FontWeight.SemiBold, fontSize = 16.sp) }
+                character.status?.let { Text(text = it) }
+                character.species?.let { Text(text = it) }
+                character.origin?.name?.let { Text(text = it) }
             }
         }
     }
-
-
-}*/
-
+}
 
 
 
