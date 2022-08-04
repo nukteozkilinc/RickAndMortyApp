@@ -1,9 +1,13 @@
-package com.nukte.composefirst.presentation
+package com.nukte.composefirst.presentation.home
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,15 +22,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.nukte.composefirst.model.Characters
+import com.nukte.composefirst.navigation.NavRoutes
 
-interface CharList {
 
-    companion object{
-        @Composable
-        fun Content(character : Characters) {
-            Item(character)
+@Composable
+fun Content(character: List<Characters>, navController: NavController) {
+    //Item(character)
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(minSize = 300.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+    ){
+        items(character){
+                    ItemCard(character = it,navController)
         }
     }
 }
@@ -45,11 +55,17 @@ fun ItemImage(image : Characters, modifier : Modifier){
 
 
 @Composable
-fun Item(character : Characters,alignment: Alignment.Horizontal=Alignment.Start){
+fun ItemCard(
+    character : Characters,
+    navController: NavController,
+    alignment: Alignment.Horizontal=Alignment.Start
+    ){
     Card(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 8.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable{navController.navigate(NavRoutes.Detail.route)}
+        ,
         shape = RoundedCornerShape(corner = CornerSize(16.dp))
     ) {
         val color = when (character.status){
@@ -57,16 +73,9 @@ fun Item(character : Characters,alignment: Alignment.Horizontal=Alignment.Start)
             "Dead" -> Color.Red
              else -> Color.Gray
          }
-        //androidx.constraintlayout.compose.ConstraintLayout {
-           // val (image, column) = createRefs()
 
             Row {
                 ItemImage(image = character, modifier = Modifier
-                    //.padding(top = 8.dp)
-                    //.constrainAs(image) {
-                      //  start.linkTo(column.end)
-                        //centerHorizontallyTo(parent)
-                    //}
                     .size(150.dp)
                     .fillMaxWidth(0.35f)
 
@@ -75,12 +84,6 @@ fun Item(character : Characters,alignment: Alignment.Horizontal=Alignment.Start)
                 Column(
                     modifier = Modifier
                         .padding(8.dp)
-                        // .constrainAs(column) {
-                        //   top.linkTo(image.bottom)
-                        // start.linkTo(parent.start)
-                        // end.linkTo(parent.end)
-                        // width = androidx.constraintlayout.compose.Dimension.fillToConstraints
-                        //   }
                         .animateContentSize()
                         .fillMaxWidth()
                         .fillMaxHeight(),
@@ -104,9 +107,7 @@ fun Item(character : Characters,alignment: Alignment.Horizontal=Alignment.Start)
                     }
                 }
             }
-            }
-
- // }
+    }
 }
 
 

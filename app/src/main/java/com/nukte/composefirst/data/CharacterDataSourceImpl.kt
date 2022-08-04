@@ -16,5 +16,4 @@ class CharacterDataSourceImpl @Inject constructor(
     override suspend fun getAllCharacters(): List<Characters> = withContext(dispatcher) {
         return@withContext api.getCharacters().results
     }
-
 }

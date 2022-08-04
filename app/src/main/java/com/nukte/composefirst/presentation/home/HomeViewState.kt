@@ -1,4 +1,4 @@
-package com.nukte.composefirst.presentation
+package com.nukte.composefirst.presentation.home
 
 import com.nukte.composefirst.model.Characters
 

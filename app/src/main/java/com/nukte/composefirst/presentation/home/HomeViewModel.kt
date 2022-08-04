@@ -1,4 +1,4 @@
-package com.nukte.composefirst.presentation
+package com.nukte.composefirst.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
