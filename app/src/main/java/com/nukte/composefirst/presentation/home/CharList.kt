@@ -4,7 +4,17 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -16,6 +26,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -34,16 +45,16 @@ fun Content(character: List<Characters>, navController: NavController) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 300.dp),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
-    ){
-        items(character){
-                    ItemCard(character = it,navController)
+    ) {
+        items(character) {
+            ItemCard(character = it, navController)
         }
     }
 }
 
 
 @Composable
-fun ItemImage(image : Characters, modifier : Modifier){
+fun ItemImage(image: Characters, modifier: Modifier) {
     Image(
         painter = rememberAsyncImagePainter(image.image),
         contentDescription = null,
@@ -56,57 +67,61 @@ fun ItemImage(image : Characters, modifier : Modifier){
 
 @Composable
 fun ItemCard(
-    character : Characters,
+    character: Characters,
     navController: NavController,
-    alignment: Alignment.Horizontal=Alignment.Start
-    ){
+    alignment: Alignment.Horizontal = Alignment.Start,
+) {
     Card(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 8.dp)
             .fillMaxWidth()
-            .clickable{navController.navigate(NavRoutes.Detail.route)}
-        ,
-        shape = RoundedCornerShape(corner = CornerSize(16.dp))
+            .clip(RoundedCornerShape(corner = CornerSize(16.dp)))
+            .clickable { navController.navigate(NavRoutes.Detail.route + "/${character.id}") },
     ) {
-        val color = when (character.status){
+        val color = when (character.status) {
             "Alive" -> Color.Green
             "Dead" -> Color.Red
-             else -> Color.Gray
-         }
+            else -> Color.Gray
+        }
 
-            Row {
-                ItemImage(image = character, modifier = Modifier
-                    .size(150.dp)
-                    .fillMaxWidth(0.35f)
+        Row {
+            ItemImage(image = character, modifier = Modifier
+                .height(150.dp)
+                .fillMaxWidth(0.40f)
 
-                )
+            )
 
-                Column(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .animateContentSize()
-                        .fillMaxWidth()
-                        .fillMaxHeight(),
-                    horizontalAlignment = alignment
+            Column(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .animateContentSize()
+                    .fillMaxWidth()
+                    .fillMaxHeight(),
+                horizontalAlignment = alignment
+            ) {
+                character.name?.let {
+                    Text(text = it,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 16.sp,
+                        overflow = TextOverflow.Ellipsis)
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                character.origin?.name?.let { Text(text = it) }
+                Spacer(modifier = Modifier.height(8.dp))
+                character.species?.let { Text(text = it) }
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    character.name?.let { Text(text = it, fontWeight = FontWeight.SemiBold, fontSize = 16.sp, overflow = TextOverflow.Ellipsis) }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    character.origin?.name?.let { Text(text = it) }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    character.species?.let { Text(text = it) }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        Box(modifier = Modifier
-                            .size(10.dp)
-                            .background(color = color, shape = CircleShape)
-                        )
-                        character.status?.let { Text(text = it) }
-                    }
+                    Box(modifier = Modifier
+                        .size(10.dp)
+                        .background(color = color, shape = CircleShape)
+                    )
+                    character.status?.let { Text(text = it) }
                 }
             }
+        }
     }
 }
 

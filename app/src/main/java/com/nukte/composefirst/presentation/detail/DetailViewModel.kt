@@ -16,7 +16,7 @@ class DetailViewModel @Inject constructor(
     val detailsState = _detailsState
     val characterId = mutableStateOf(0)
 
-    private fun getCharacterbyId() = viewModelScope.launch {
+    fun getCharacterbyId(charId: Int) = viewModelScope.launch {
 
 
     }
