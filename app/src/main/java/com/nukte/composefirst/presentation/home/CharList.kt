@@ -22,6 +22,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -40,14 +42,14 @@ import com.nukte.composefirst.navigation.NavRoutes
 
 
 @Composable
-fun Content(character: List<Characters>, navController: NavController) {
+fun Content(character: List<Characters>, openUser: () -> Unit) {
     //Item(character)
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 300.dp),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
     ) {
         items(character) {
-            ItemCard(character = it, navController)
+            ItemCard(character = it, openUser)
         }
     }
 }
@@ -65,18 +67,20 @@ fun ItemImage(image: Characters, modifier: Modifier) {
 }
 
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ItemCard(
     character: Characters,
-    navController: NavController,
+    openUser: () -> Unit,
     alignment: Alignment.Horizontal = Alignment.Start,
 ) {
     Card(
+        onClick = openUser,
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 8.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(corner = CornerSize(16.dp)))
-            .clickable { navController.navigate(NavRoutes.Detail.route + "/${character.id}") },
+            //.clickable { navController.navigate(NavRoutes.Detail.route + "/${character.id}") },
     ) {
         val color = when (character.status) {
             "Alive" -> Color.Green

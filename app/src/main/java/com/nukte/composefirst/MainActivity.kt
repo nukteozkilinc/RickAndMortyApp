@@ -9,6 +9,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import com.nukte.composefirst.components.AppContent
+import com.nukte.composefirst.navigation.AppNavigation
 import com.nukte.composefirst.ui.theme.RickAndMorty
 import dagger.hilt.android.AndroidEntryPoint
 
