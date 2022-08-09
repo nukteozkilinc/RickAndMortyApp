@@ -56,9 +56,9 @@ fun Content(character: List<Characters>,showDetail:(charId:Int) -> Unit) {
 
 
 @Composable
-fun ItemImage(image: Characters, modifier: Modifier) {
+fun ItemImage(image: String, modifier: Modifier) {
     Image(
-        painter = rememberAsyncImagePainter(image.image),
+        painter = rememberAsyncImagePainter(image),
         contentDescription = null,
         contentScale = ContentScale.Crop,// en/boy oranını koruyarak boyutu ayarlar
         modifier = modifier,
@@ -82,8 +82,7 @@ fun ItemCard(
             .padding(horizontal = 8.dp, vertical = 8.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(corner = CornerSize(16.dp)))
-            .clickable { character.id?.let {
-                showDetail(it) } }
+            .clickable { character.id?.let { showDetail(it) } }
             //.clickable { navController.navigate(NavRoutes.Detail.route + "/${character.id}") },
     ) {
         val color = when (character.status) {
@@ -93,11 +92,13 @@ fun ItemCard(
         }
 
         Row {
-            ItemImage(image = character, modifier = Modifier
-                .height(150.dp)
-                .fillMaxWidth(0.40f)
+            character.image?.let {
+                ItemImage(image = it, modifier = Modifier
+                    .height(150.dp)
+                    .fillMaxWidth(0.40f)
 
-            )
+                )
+            }
 
             Column(
                 modifier = Modifier
