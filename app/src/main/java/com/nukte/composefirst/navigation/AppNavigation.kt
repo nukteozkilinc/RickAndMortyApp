@@ -85,7 +85,8 @@ private fun NavGraphBuilder.addDetailScreen(
         DetailScreen(
             showDetails = {
                 navController.navigate(LeafScreen.Details.createRoute(root,it))
-            }
+            },
+            openUser = {navController.navigate(LeafScreen.Home.createRoute(root))}
         )
     }
 }

@@ -29,14 +29,16 @@ import kotlin.random.Random
 
 @Composable
 fun DetailScreen(
-    showDetails :(charId:Int) -> Unit
+    showDetails :(charId:Int) -> Unit,
+    openUser : () -> Unit
     //navController: NavController,
     //backStackEntry: NavBackStackEntry)
 )
 {
     DetailScreen(
         viewModel = hiltViewModel(),
-        showDetails = showDetails
+        showDetails = showDetails,
+        openUser = openUser
     )
     /*Column(modifier = Modifier.fillMaxSize()) {
         Text(text = "Hello")}*/
@@ -51,7 +53,9 @@ fun DetailScreen(
 @Composable
 internal fun DetailScreen(
     viewModel: DetailViewModel,
-    showDetails: (charId: Int) -> Unit
+    showDetails: (charId: Int) -> Unit,
+    openUser : () -> Unit
+
 ){
     /*Column(modifier = Modifier.fillMaxSize()) {
         Text(text = "Hello $showDetails")
@@ -161,7 +165,7 @@ internal fun DetailScreen(
                 shape = CircleShape
             ) {
                 IconButton(
-                    onClick = { },
+                    onClick = openUser,
                     modifier = Modifier.padding(4.dp)) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
