@@ -42,14 +42,14 @@ import com.nukte.composefirst.navigation.NavRoutes
 
 
 @Composable
-fun Content(character: List<Characters>, openUser: () -> Unit) {
+fun Content(character: List<Characters>,showDetail:(charId:Int) -> Unit) {
     //Item(character)
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 300.dp),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
     ) {
         items(character) {
-            ItemCard(character = it, openUser)
+            ItemCard(character = it,showDetail)
         }
     }
 }
@@ -71,15 +71,19 @@ fun ItemImage(image: Characters, modifier: Modifier) {
 @Composable
 fun ItemCard(
     character: Characters,
-    openUser: () -> Unit,
+   // openUser: () -> Unit,
+    showDetail:(charId:Int) -> Unit,
     alignment: Alignment.Horizontal = Alignment.Start,
+
 ) {
     Card(
-        onClick = openUser,
+        //onClick = openUser,
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 8.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(corner = CornerSize(16.dp)))
+            .clickable { character.id?.let {
+                showDetail(it) } }
             //.clickable { navController.navigate(NavRoutes.Detail.route + "/${character.id}") },
     ) {
         val color = when (character.status) {

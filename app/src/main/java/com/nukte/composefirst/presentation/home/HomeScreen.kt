@@ -16,18 +16,21 @@ import com.nukte.composefirst.components.Logo
 @ExperimentalFoundationApi
 @Composable
 fun HomeScreen(
-    openUser: () -> Unit
+    //openUser: () -> Unit,
+    showDetail:(charId:Int) -> Unit
 ){
     HomeScreen(
         viewModel =  hiltViewModel(),
-        openUser = openUser
+        //openUser = openUser,
+        showDetail = showDetail
     )
 }
 
 @Composable
 internal fun HomeScreen(
     viewModel : HomeViewModel,
-    openUser: () -> Unit
+    //openUser: () -> Unit,
+    showDetail:(charId:Int) -> Unit
 ){
     val viewState by viewModel.characterListFlow.collectAsState()
 
@@ -37,6 +40,6 @@ internal fun HomeScreen(
         Logo(
             modifier = Modifier.fillMaxWidth()
         )
-        Content(character = viewState.characterList,openUser)
+        Content(character = viewState.characterList,showDetail)
     }
 }

@@ -11,17 +11,31 @@ import androidx.navigation.NavController
 
 @Composable
 fun DetailScreen(
-    openUser: () -> Unit
+    showDetails :(charId:Int) -> Unit
     //navController: NavController,
     //backStackEntry: NavBackStackEntry)
 )
 {
-    Column(modifier = Modifier.fillMaxSize()) {
-        Text(text = "Hello")}
+    DetailScreen(
+        viewModel = hiltViewModel(),
+        showDetails = showDetails
+    )
+    /*Column(modifier = Modifier.fillMaxSize()) {
+        Text(text = "Hello")}*/
    /* val charId = backStackEntry.arguments?.getInt("charId") ?: -1
     val viewModel: DetailViewModel = hiltViewModel()
     viewModel.getCharacterbyId(charId)
     Column(modifier = Modifier.fillMaxSize()) {
         Text(text = "Hello $charId")
     }*/
+}
+
+@Composable
+internal fun DetailScreen(
+    viewModel: DetailViewModel,
+    showDetails: (charId: Int) -> Unit
+){
+    Column(modifier = Modifier.fillMaxSize()) {
+        Text(text = "Hello $showDetails")
+    }
 }

@@ -4,18 +4,14 @@ package com.nukte.composefirst.navigation
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
+import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navigation
 import com.nukte.composefirst.presentation.detail.DetailScreen
 import com.nukte.composefirst.presentation.home.HomeScreen
 
 internal sealed class Screen(val route : String){
     object Home : Screen("home")
-    object Detail : Screen("detail")
 }
 
 private sealed class LeafScreen(
@@ -24,7 +20,11 @@ private sealed class LeafScreen(
     fun createRoute(root:Screen) = "${root.route}/$route"
 
     object Home : LeafScreen("home")
-    object Detail : LeafScreen("detail")
+    object Details : LeafScreen("detail/{charId}"){
+        fun createRoute(root: Screen,charId:Int):String{
+            return "${root.route}/detail/$charId"
+        }
+    }
 }
 
 @Composable
@@ -38,7 +38,6 @@ internal fun AppNavigation(
         modifier = Modifier
     ){
         addHomeTopLevel(navController)
-        addDetailsTopLevel(navController)
     }
 }
 
@@ -54,18 +53,6 @@ private fun NavGraphBuilder.addHomeTopLevel(
     }
 }
 
-private fun NavGraphBuilder.addDetailsTopLevel(
-    navController: NavController
-){
-    navigation(
-        route = Screen.Detail.route,
-        startDestination = LeafScreen.Detail.createRoute(Screen.Detail)
-    ){
-        addHomeScreen(navController,Screen.Detail)
-        addDetailScreen(navController,Screen.Detail)
-    }
-}
-
 
 @OptIn(ExperimentalFoundationApi::class)
 private fun NavGraphBuilder.addHomeScreen(
@@ -76,21 +63,29 @@ private fun NavGraphBuilder.addHomeScreen(
         route = LeafScreen.Home.createRoute(root)
     ){
         HomeScreen(
-            openUser = {navController.navigate(LeafScreen.Detail.createRoute(root))}
+            //openUser = {navController.navigate(LeafScreen.Details.createRoute(root))},
+            showDetail = {
+                navController.navigate(LeafScreen.Details.createRoute(root,it))
+            }
         )
     }
 }
+
 
 private fun NavGraphBuilder.addDetailScreen(
     navController: NavController,
     root : Screen
 ){
     composable(
-        route = LeafScreen.Detail.createRoute(root)
+        route = LeafScreen.Details.createRoute(root),
+        arguments = listOf(
+            navArgument("charId"){type = NavType.IntType}
+        )
     ){
         DetailScreen(
-            openUser = {navController.navigate(LeafScreen.Home.createRoute(root))}
+            showDetails = {
+                navController.navigate(LeafScreen.Details.createRoute(root,it))
+            }
         )
     }
 }
-
