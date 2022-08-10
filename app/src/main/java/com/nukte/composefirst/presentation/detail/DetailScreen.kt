@@ -1,5 +1,6 @@
 package com.nukte.composefirst.presentation.detail
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -29,7 +30,6 @@ import kotlin.random.Random
 
 @Composable
 fun DetailScreen(
-    showDetails :(charId:Int) -> Unit,
     openUser : () -> Unit
     //navController: NavController,
     //backStackEntry: NavBackStackEntry)
@@ -37,7 +37,6 @@ fun DetailScreen(
 {
     DetailScreen(
         viewModel = hiltViewModel(),
-        showDetails = showDetails,
         openUser = openUser
     )
     /*Column(modifier = Modifier.fillMaxSize()) {
@@ -53,14 +52,12 @@ fun DetailScreen(
 @Composable
 internal fun DetailScreen(
     viewModel: DetailViewModel,
-    showDetails: (charId: Int) -> Unit,
     openUser : () -> Unit
 
 ){
     /*Column(modifier = Modifier.fillMaxSize()) {
         Text(text = "Hello $showDetails")
     }*/
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -113,7 +110,7 @@ internal fun DetailScreen(
     }
         Spacer(modifier = Modifier.height(10.dp))
         Text(
-            text = "Karakter İsmi",
+            text = viewModel.characterId.toString(),
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )
