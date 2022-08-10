@@ -17,7 +17,7 @@ import com.nukte.composefirst.components.Logo
 @Composable
 fun HomeScreen(
     //openUser: () -> Unit,
-    showDetail:(charId:Int) -> Unit
+    showDetail:(charId:String) -> Unit
 ){
     HomeScreen(
         viewModel =  hiltViewModel(),
@@ -30,7 +30,7 @@ fun HomeScreen(
 internal fun HomeScreen(
     viewModel : HomeViewModel,
     //openUser: () -> Unit,
-    showDetail:(charId:Int) -> Unit
+    showDetail:(charId:String) -> Unit
 ){
     val viewState by viewModel.characterListFlow.collectAsState()
 
