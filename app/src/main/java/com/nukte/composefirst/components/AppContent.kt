@@ -2,15 +2,8 @@ package com.nukte.composefirst.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.nukte.composefirst.navigation.AppNavigation
-import com.nukte.composefirst.navigation.NavRoutes
-import com.nukte.composefirst.presentation.detail.DetailScreen
-import com.nukte.composefirst.presentation.home.HomeScreen
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.nukte.composefirst.presentation.more.MoreScreen
 import com.nukte.composefirst.presentation.detail.DetailScreen
 import com.nukte.composefirst.presentation.home.HomeScreen
 
@@ -24,6 +25,11 @@ private sealed class LeafScreen(
     fun createRoute(root: Screen) = "${root.route}/$route"
 
     object Home : LeafScreen("home")
+    object More : LeafScreen("more/{charId}"){
+        fun createRoute(root: Screen, charId: Int): String {
+            return "${root.route}/more/${charId}"
+        }
+    }
     object Details : LeafScreen("detail/{charId}") {
         fun createRoute(root: Screen, charId: Int): String {
             return "${root.route}/detail/${charId}"
@@ -50,6 +56,7 @@ private fun NavGraphBuilder.addHomeTopLevel(
         startDestination = LeafScreen.Home.createRoute(Screen.Home)) {
         addHomeScreen(navController, Screen.Home)
         addDetailScreen(navController, Screen.Home)
+        addMoreScreen(navController,Screen.Home)
     }
 }
 
@@ -61,7 +68,6 @@ private fun NavGraphBuilder.addHomeScreen(
 ) {
     composable(route = LeafScreen.Home.createRoute(root)) {
         HomeScreen(
-            //openUser = {navController.navigate(LeafScreen.Details.createRoute(root))},
             showDetail = {
                 navController.navigate(LeafScreen.Details.createRoute(root, it))
             })
@@ -75,6 +81,23 @@ private fun NavGraphBuilder.addDetailScreen(
 ) {
     composable(route = LeafScreen.Details.createRoute(root),
         arguments = listOf(navArgument("charId") { type = NavType.IntType })) {
-        DetailScreen(openUser = { navController.navigate(LeafScreen.Home.createRoute(root)) })
+        DetailScreen(
+            openUser = { navController.navigate(LeafScreen.Home.createRoute(root)) },
+            showMore = {navController.navigate(LeafScreen.More.createRoute(root,it))}
+
+        )
+    }
+}
+
+private fun NavGraphBuilder.addMoreScreen(
+    navController: NavController,
+    root: Screen
+){
+    composable(route = LeafScreen.More.createRoute(root),
+    arguments = listOf(navArgument("charId"){type = NavType.IntType})
+        ){
+        MoreScreen(
+            openUser = {navController.navigate(LeafScreen.Home.createRoute(root))}
+        )
     }
 }

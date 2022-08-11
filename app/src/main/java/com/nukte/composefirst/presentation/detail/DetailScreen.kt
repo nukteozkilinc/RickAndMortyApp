@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,8 +17,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.nukte.composefirst.R
@@ -25,19 +28,22 @@ import com.nukte.composefirst.ui.theme.*
 
 @Composable
 fun DetailScreen(
-    openUser : () -> Unit
+    openUser : () -> Unit,
+    showMore:(charId:Int) -> Unit,
 )
 {
     DetailScreen(
         viewModel = hiltViewModel(),
-        openUser = openUser
+        openUser = openUser,
+        showMore = showMore
     )
 }
 
 @Composable
 internal fun DetailScreen(
     viewModel: DetailViewModel,
-    openUser : () -> Unit
+    openUser : () -> Unit,
+    showMore:(charId:Int) -> Unit,
 
 ){
     Column(
@@ -92,7 +98,9 @@ internal fun DetailScreen(
         Text(
             text = viewModel.state.characterDetail?.name.toString(),
             textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            style = MaterialTheme.typography.h5,
+            fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(10.dp))
         Row(
@@ -114,6 +122,8 @@ internal fun DetailScreen(
             Spacer(modifier = Modifier.size(8.dp))
             Text(
                 text = viewModel.state.characterDetail?.status.toString(),
+                style = MaterialTheme.typography.h6,
+                fontWeight = FontWeight.SemiBold
             )
         }
         Spacer(modifier = Modifier.size(10.dp))
@@ -122,11 +132,16 @@ internal fun DetailScreen(
             horizontalArrangement = Arrangement.SpaceAround
         ){
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = viewModel.state.characterDetail?.species.toString())
+                Text(text = viewModel.state.characterDetail?.species.toString(),
+                    style = MaterialTheme.typography.h6,
+                    fontWeight = FontWeight.SemiBold)
                 Text(text = "Species")
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = viewModel.state.characterDetail?.gender.toString())
+                Text(text = viewModel.state.characterDetail?.gender.toString(),
+                    style = MaterialTheme.typography.h6,
+                    fontWeight = FontWeight.SemiBold
+                    )
                 Text(text = "Gender")
             }
         }
@@ -136,28 +151,48 @@ internal fun DetailScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceAround
         ){
-            Text(text = viewModel.state.characterDetail?.location?.name.toString())
+            Text(
+                text = viewModel.state.characterDetail?.location?.name.toString(),
+                style = MaterialTheme.typography.h6,
+                fontWeight = FontWeight.SemiBold)
             Text("Location")
         }
-        Box(modifier = Modifier.fillMaxWidth()) {
-            Surface(
-                modifier = Modifier
-                    .align(Alignment.TopStart)
-                    .padding(8.dp),
-                shape = CircleShape
-            ) {
-                IconButton(
-                    onClick = openUser,
-                    modifier = Modifier.padding(4.dp)) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "navigate back"
-                    )
+            Box(modifier = Modifier.fillMaxWidth()) {
+                Surface(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(8.dp),
+                    shape = CircleShape
+                ) {
+                    IconButton(
+                        onClick = { showMore(viewModel.state.characterDetail?.id?.toInt() ?: -1) },
+                        modifier = Modifier.padding(4.dp)) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowForward,
+                            contentDescription = "navigate forward"
+                        )
+                    }
                 }
             }
-        }
-
     }
+    Box(modifier = Modifier.fillMaxWidth()) {
+        Surface(
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(8.dp),
+            shape = CircleShape
+        ) {
+            IconButton(
+                onClick = openUser,
+                modifier = Modifier.padding(4.dp)) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "navigate back"
+                )
+            }
+        }
+    }
+
 }
 @Composable
 fun ItemDetailImage(image: String, modifier: Modifier) {

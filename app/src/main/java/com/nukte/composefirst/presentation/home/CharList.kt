@@ -22,8 +22,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -35,10 +33,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.nukte.composefirst.model.Characters
-import com.nukte.composefirst.navigation.NavRoutes
 
 
 @Composable
@@ -92,16 +88,13 @@ fun ItemCard(
             "Dead" -> Color.Red
             else -> Color.Gray
         }
-
         Row {
             character.image?.let {
                 ItemImage(image = it, modifier = Modifier
                     .height(150.dp)
                     .fillMaxWidth(0.40f)
-
                 )
             }
-
             Column(
                 modifier = Modifier
                     .padding(8.dp)

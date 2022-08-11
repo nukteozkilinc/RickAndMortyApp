@@ -18,6 +18,7 @@ import com.nukte.composefirst.components.Logo
 fun HomeScreen(
     //openUser: () -> Unit,
     showDetail:(charId:Int) -> Unit,
+
 ){
     HomeScreen(
         viewModel =  hiltViewModel(),
