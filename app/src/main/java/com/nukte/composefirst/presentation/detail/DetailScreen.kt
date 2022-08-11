@@ -1,6 +1,6 @@
 package com.nukte.composefirst.presentation.detail
 
-import android.util.Log
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -14,39 +14,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.nukte.composefirst.R
-import com.nukte.composefirst.model.Characters
-import com.nukte.composefirst.presentation.home.ItemImage
 import com.nukte.composefirst.ui.theme.*
-import java.lang.Math.random
-import kotlin.random.Random
 
 @Composable
 fun DetailScreen(
     openUser : () -> Unit
-    //navController: NavController,
-    //backStackEntry: NavBackStackEntry)
 )
 {
     DetailScreen(
         viewModel = hiltViewModel(),
         openUser = openUser
     )
-    /*Column(modifier = Modifier.fillMaxSize()) {
-        Text(text = "Hello")}*/
-   /* val charId = backStackEntry.arguments?.getInt("charId") ?: -1
-    val viewModel: DetailViewModel = hiltViewModel()
-    viewModel.getCharacterbyId(charId)
-    Column(modifier = Modifier.fillMaxSize()) {
-        Text(text = "Hello $charId")
-    }*/
 }
 
 @Composable
@@ -55,14 +40,11 @@ internal fun DetailScreen(
     openUser : () -> Unit
 
 ){
-    /*Column(modifier = Modifier.fillMaxSize()) {
-        Text(text = "Hello $showDetails")
-    }*/
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(PastelGreen),
-       verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Card(
             modifier = Modifier
@@ -79,7 +61,6 @@ internal fun DetailScreen(
                     modifier= Modifier
                         .fillMaxWidth()
                         .fillMaxHeight(0.15f)
-                        //.align(Alignment.Center)
                         .clip(
                             RoundedCornerShape(8.dp)
                         ),
@@ -89,28 +70,27 @@ internal fun DetailScreen(
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                    Box(
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ){
+                    ItemDetailImage(
+                        image = viewModel.state.characterDetail?.image.toString(),
                         modifier = Modifier
-                            .fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ){
-                        Image( //Geçici foto
-                            modifier= Modifier
-                                .fillMaxWidth()
-                                .fillMaxHeight(0.5f)
-                                .align(Alignment.Center)
-                                .clip(
-                                    RoundedCornerShape(8.dp)
-                                ),
-                            painter = painterResource(
-                                id = R.drawable.icon_5f563b54cb9c8_6182_w256),
-                            contentDescription = "logo")
-                    }
+                            .height(270.dp)
+                            .fillMaxWidth(0.70f)
+                            .align(Alignment.Center)
+                            .clip(
+                                RoundedCornerShape(8.dp)
+                            )
+                    )
+                }
             }
-    }
+        }
         Spacer(modifier = Modifier.height(10.dp))
         Text(
-            text = viewModel.characterId.toString(),
+            text = viewModel.state.characterDetail?.name.toString(),
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )
@@ -120,15 +100,20 @@ internal fun DetailScreen(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ){
+            val color = when (viewModel.state.characterDetail?.status.toString()) {
+                "Alive" -> Color.Green
+                "Dead" -> Color.Red
+                else -> Color.Gray
+            }
             Box(
                 modifier = Modifier
                     .size(14.dp)
                     .clip(CircleShape)
-                    .background(Color.Cyan)
+                    .background(color)
             )
             Spacer(modifier = Modifier.size(8.dp))
             Text(
-                text = "Status",
+                text = viewModel.state.characterDetail?.status.toString(),
             )
         }
         Spacer(modifier = Modifier.size(10.dp))
@@ -137,11 +122,11 @@ internal fun DetailScreen(
             horizontalArrangement = Arrangement.SpaceAround
         ){
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = "Karakter Species")
+                Text(text = viewModel.state.characterDetail?.species.toString())
                 Text(text = "Species")
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = "Karakter Gender")
+                Text(text = viewModel.state.characterDetail?.gender.toString())
                 Text(text = "Gender")
             }
         }
@@ -150,14 +135,14 @@ internal fun DetailScreen(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceAround
-                ){
-            Text(text = "Karakter Location")
+        ){
+            Text(text = viewModel.state.characterDetail?.location?.name.toString())
             Text("Location")
         }
         Box(modifier = Modifier.fillMaxWidth()) {
             Surface(
                 modifier = Modifier
-                    .align(Alignment.TopStart) //?????????????
+                    .align(Alignment.TopStart)
                     .padding(8.dp),
                 shape = CircleShape
             ) {
@@ -173,4 +158,14 @@ internal fun DetailScreen(
         }
 
     }
+}
+@Composable
+fun ItemDetailImage(image: String, modifier: Modifier) {
+    Image(
+        painter = rememberAsyncImagePainter(image),
+        contentDescription = null,
+        contentScale = ContentScale.Crop,// en/boy oranını koruyarak boyutu ayarlar
+        modifier = modifier,
+        alignment = Alignment.Center
+    )
 }

@@ -25,7 +25,7 @@ private sealed class LeafScreen(
 
     object Home : LeafScreen("home")
     object Details : LeafScreen("detail/{charId}") {
-        fun createRoute(root: Screen, charId: String): String {
+        fun createRoute(root: Screen, charId: Int): String {
             return "${root.route}/detail/${charId}"
         }
     }
@@ -74,7 +74,7 @@ private fun NavGraphBuilder.addDetailScreen(
     root: Screen,
 ) {
     composable(route = LeafScreen.Details.createRoute(root),
-        arguments = listOf(navArgument("charId") { type = NavType.StringType })) {
+        arguments = listOf(navArgument("charId") { type = NavType.IntType })) {
         DetailScreen(openUser = { navController.navigate(LeafScreen.Home.createRoute(root)) })
     }
 }
