@@ -1,10 +1,14 @@
 package com.nukte.composefirst.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
+@Entity(tableName = "characterTable")
 data class Characters (
 
-    @SerializedName("id"       ) var id       : Int?              = null,
+    @PrimaryKey @SerializedName("id"       ) var id       : Int?              = null,
     @SerializedName("name"     ) var name     : String?           = null,
     @SerializedName("status"   ) var status   : String?           = null,
     @SerializedName("species"  ) var species  : String?           = null,

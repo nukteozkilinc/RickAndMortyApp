@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -51,26 +52,30 @@ internal fun MoreScreen(
                 MoreScreenList(viewModel = viewModel)
             }
         }
+       /* LazyRow(contentPadding =PaddingValues(horizontal = 16.dp, vertical = 8.dp) ){
+            item{
+                MoreScreenList(viewModel = viewModel)
+            }
+        }*/
 
-        Box(modifier = Modifier.fillMaxWidth()) {
-            Surface(
-                modifier = Modifier
-                    .align(Alignment.TopStart)
-                    .padding(8.dp),
-                shape = CircleShape
-            ) {
-                IconButton(
-                    onClick = openUser,
-                    modifier = Modifier.padding(4.dp)) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "navigate back"
-                    )
-                }
+    }
+    Box(modifier = Modifier.fillMaxWidth()) {
+        Surface(
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(8.dp),
+            shape = CircleShape
+        ) {
+            IconButton(
+                onClick = openUser,
+                modifier = Modifier.padding(4.dp)) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "navigate back"
+                )
             }
         }
     }
-
 }
 
 @Composable

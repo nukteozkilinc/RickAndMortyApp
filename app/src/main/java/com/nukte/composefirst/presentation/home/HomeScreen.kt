@@ -9,20 +9,17 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.nukte.composefirst.components.Logo
-
+import com.nukte.composefirst.drawer.AppBar
 
 @ExperimentalFoundationApi
 @Composable
 fun HomeScreen(
-    //openUser: () -> Unit,
     showDetail:(charId:Int) -> Unit,
 
 ){
     HomeScreen(
         viewModel =  hiltViewModel(),
-        //openUser = openUser,
         showDetail = showDetail,
     )
 }
@@ -30,7 +27,6 @@ fun HomeScreen(
 @Composable
 internal fun HomeScreen(
     viewModel : HomeViewModel,
-    //openUser: () -> Unit,
     showDetail:(charId:Int) -> Unit
 ){
     val viewState by viewModel.characterListFlow.collectAsState()

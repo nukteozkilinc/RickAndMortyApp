@@ -13,10 +13,12 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.nukte.composefirst.presentation.more.MoreScreen
 import com.nukte.composefirst.presentation.detail.DetailScreen
+import com.nukte.composefirst.presentation.favorite.FavoriteScreen
 import com.nukte.composefirst.presentation.home.HomeScreen
 
 internal sealed class Screen(val route: String) {
     object Home : Screen("home")
+    object Favorite : Screen("favorite")
 }
 
 private sealed class LeafScreen(
@@ -25,6 +27,7 @@ private sealed class LeafScreen(
     fun createRoute(root: Screen) = "${root.route}/$route"
 
     object Home : LeafScreen("home")
+    object Favorite : LeafScreen("favorite")
     object More : LeafScreen("more/{charId}"){
         fun createRoute(root: Screen, charId: Int): String {
             return "${root.route}/more/${charId}"
@@ -39,13 +42,13 @@ private sealed class LeafScreen(
 
 @Composable
 internal fun AppNavigation(
-    navController: NavHostController,
-    modifier: Modifier = Modifier,
+    navController: NavHostController
 ) {
     NavHost(navController = navController,
         startDestination = Screen.Home.route,
         modifier = Modifier) {
         addHomeTopLevel(navController)
+        addFavoriteTopLevel(navController)
     }
 }
 
@@ -60,6 +63,15 @@ private fun NavGraphBuilder.addHomeTopLevel(
     }
 }
 
+private fun NavGraphBuilder.addFavoriteTopLevel(
+    navController: NavController,
+) {
+    navigation(route = Screen.Favorite.route,
+        startDestination = LeafScreen.Favorite.createRoute(Screen.Favorite)) {
+        addFavoriteScreen(navController,Screen.Favorite)
+    }
+}
+
 
 @OptIn(ExperimentalFoundationApi::class)
 private fun NavGraphBuilder.addHomeScreen(
@@ -70,10 +82,20 @@ private fun NavGraphBuilder.addHomeScreen(
         HomeScreen(
             showDetail = {
                 navController.navigate(LeafScreen.Details.createRoute(root, it))
-            })
+            }
+            )
     }
 }
-
+@OptIn(ExperimentalFoundationApi::class)
+private fun NavGraphBuilder.addFavoriteScreen(
+    navController: NavController,
+    root: Screen,
+) {
+    composable(route = LeafScreen.Favorite.createRoute(root)) {
+        FavoriteScreen(
+        )
+    }
+}
 
 private fun NavGraphBuilder.addDetailScreen(
     navController: NavController,
