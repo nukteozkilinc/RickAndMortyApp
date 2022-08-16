@@ -27,7 +27,11 @@ private sealed class LeafScreen(
     fun createRoute(root: Screen) = "${root.route}/$route"
 
     object Home : LeafScreen("home")
-    object Favorite : LeafScreen("favorite")
+    object Favorite : LeafScreen("favorite"){
+        fun createRoute(root: Screen, charId: Int): String {
+            return "${root.route}/favorite/${charId}"
+        }
+    }
     object More : LeafScreen("more/{charId}"){
         fun createRoute(root: Screen, charId: Int): String {
             return "${root.route}/more/${charId}"
@@ -68,7 +72,9 @@ private fun NavGraphBuilder.addFavoriteTopLevel(
 ) {
     navigation(route = Screen.Favorite.route,
         startDestination = LeafScreen.Favorite.createRoute(Screen.Favorite)) {
+        addHomeScreen(navController,Screen.Favorite)
         addFavoriteScreen(navController,Screen.Favorite)
+        addDetailScreen(navController, Screen.Favorite)
     }
 }
 
@@ -86,13 +92,18 @@ private fun NavGraphBuilder.addHomeScreen(
             )
     }
 }
+
 @OptIn(ExperimentalFoundationApi::class)
 private fun NavGraphBuilder.addFavoriteScreen(
     navController: NavController,
     root: Screen,
 ) {
-    composable(route = LeafScreen.Favorite.createRoute(root)) {
+    composable(route = LeafScreen.Favorite.createRoute(root)
+        ) {
         FavoriteScreen(
+            showDetail = {
+                navController.navigate(LeafScreen.Details.createRoute(root,it))
+            }
         )
     }
 }

@@ -20,6 +20,7 @@ data class Characters (
     @SerializedName("image"    ) var image    : String?           = null,
     @SerializedName("episode"  ) var episode  : ArrayList<String> = arrayListOf(),
     @SerializedName("url"      ) var url      : String?           = null,
-    @SerializedName("created"  ) var created  : String?           = null
+    @SerializedName("created"  ) var created  : String?           = null,
+    var isSaved : Boolean
 
 )

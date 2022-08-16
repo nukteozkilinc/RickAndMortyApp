@@ -11,15 +11,14 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -28,12 +27,14 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.nukte.composefirst.R
 import com.nukte.composefirst.model.Characters
+import com.nukte.composefirst.ui.theme.PastelGreen
 
 
 @Composable
 fun Content(
     character: List<Characters>,
-    showDetail:(charId:Int) -> Unit
+    showDetail:(charId:Int) -> Unit,
+    homeViewModel: HomeViewModel
     ) {
     //Item(character)
     LazyVerticalGrid(
@@ -41,7 +42,7 @@ fun Content(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
     ) {
         items(character) {
-            ItemCard(character = it,showDetail)
+            ItemCard(character = it,showDetail, homeViewModel)
         }
     }
 }
@@ -64,8 +65,8 @@ fun ItemCard(
     character: Characters,
     // openUser: () -> Unit,
     showDetail:(charId:Int) -> Unit,
+    homeViewModel: HomeViewModel,
     alignment: Alignment.Horizontal = Alignment.Start,
-
     ) {
     Card(
         //onClick = openUser,
@@ -116,12 +117,17 @@ fun ItemCard(
                         .background(color = color, shape = CircleShape)
                     )
                     character.status?.let { Text(text = it) }
-                    Spacer(modifier = Modifier.width(100.dp))
-                    Icon(painter = painterResource(id = R.drawable.ic_baseline_favorite_border_24),
-                        contentDescription = "Favorite",
-                        modifier = Modifier.clickable{ }
-                    )
+                    Spacer(modifier = Modifier.width(5.dp))
+                    Button(
+                        modifier = Modifier.padding(5.dp)
+                            .background(PastelGreen)
+                        ,
+                        onClick = {homeViewModel.saveChar(character)}
+                    ){
+                        Text(text = "Save")
+                    }
                 }
+
             }
         }
     }

@@ -10,13 +10,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nukte.composefirst.components.Logo
-import com.nukte.composefirst.drawer.AppBar
 
 @ExperimentalFoundationApi
 @Composable
 fun HomeScreen(
     showDetail:(charId:Int) -> Unit,
-
 ){
     HomeScreen(
         viewModel =  hiltViewModel(),
@@ -37,6 +35,6 @@ internal fun HomeScreen(
         Logo(
             modifier = Modifier.fillMaxWidth()
         )
-        Content(character = viewState.characterList,showDetail)
+        Content(character = viewState.characterList,showDetail,viewModel)
     }
 }

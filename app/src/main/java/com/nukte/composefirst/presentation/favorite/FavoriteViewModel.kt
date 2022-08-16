@@ -1,8 +1,7 @@
-package com.nukte.composefirst.presentation.home
+package com.nukte.composefirst.presentation.favorite
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nukte.composefirst.data.CharacterDataSource
 import com.nukte.composefirst.model.Characters
 import com.nukte.composefirst.repository.CharRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,25 +12,27 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    private val characterDataSource: CharacterDataSource,
+class FavoriteViewModel @Inject constructor(
     private val charRepository: CharRepositoryImpl
 ) : ViewModel() {
-    private val charStateFlow = MutableStateFlow(HomeViewState()) //data set edebilirsin
-    val characterListFlow : StateFlow<HomeViewState> = charStateFlow
-
+    private val charStateFlow = MutableStateFlow(FavoriteViewState()) //data set edebilirsin
+    val characterListFlow : StateFlow<FavoriteViewState> = charStateFlow
 
     init {
-        getAllCharacter()
+        getSavedCharacters()
     }
 
-    fun getAllCharacter() = viewModelScope.launch {
-       val characters = characterDataSource.getAllCharacters()
+    fun getSavedCharacters() = viewModelScope.launch {
+        val characters = charRepository.getAllChars()
         charStateFlow.update { it.copy(characterList = characters) }
     }
-
     fun saveChar(char: Characters) = viewModelScope.launch {
         char.isSaved = true
         charRepository.saveChar(char)
     }
+    fun deleteChar(char: Characters) = viewModelScope.launch {
+        char.isSaved = false
+        char.id?.let { charRepository.deleteChars(it) }
+    }
+
 }
