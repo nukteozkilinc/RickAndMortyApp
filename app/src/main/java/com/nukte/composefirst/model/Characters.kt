@@ -6,9 +6,10 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Entity(tableName = "characterTable")
+@Serializable
 data class Characters (
 
-    @PrimaryKey @SerializedName("id"       ) var id       : Int?              = null,
+    @PrimaryKey @SerializedName("id") var id  : Int?  = null,
     @SerializedName("name"     ) var name     : String?           = null,
     @SerializedName("status"   ) var status   : String?           = null,
     @SerializedName("species"  ) var species  : String?           = null,

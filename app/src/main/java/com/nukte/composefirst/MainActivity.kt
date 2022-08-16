@@ -5,10 +5,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.nukte.composefirst.components.AppContent
 import com.nukte.composefirst.drawer.AppBar
@@ -28,12 +26,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             RickAndMorty {
-                /*Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    AppContent()
-                }*/
                 val scaffoldState = rememberScaffoldState()
                 val scope = rememberCoroutineScope()
                 val navController = rememberNavController()
@@ -54,23 +46,25 @@ class MainActivity : ComponentActivity() {
                             items = listOf(
                                 MenuItem(
                                     id = "home",
-                                    title = "Home"
+                                    title = "Home",
+                                    screen = Screen.Home
                                 ),
                                 MenuItem(
                                     id = "favorite",
-                                    title = "Favorite"
+                                    title = "Favorite",
+                                    screen = Screen.Favorite
                                 )
                             ),
                             onItemClick ={
-                                when (it.id) {
-                                    "home" -> Screen.Home
-                                    "favorite" -> Screen.Favorite
+                                scope.launch {
+                                    navController.navigate(it.route)
+                                    scaffoldState.drawerState.close()
                                 }
                             }
                         )
                     }
                 ){
-                    AppContent()
+                    AppContent(navController)
                 }
             }
         }

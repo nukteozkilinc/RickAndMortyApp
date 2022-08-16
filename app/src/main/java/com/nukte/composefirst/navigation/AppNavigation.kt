@@ -16,7 +16,7 @@ import com.nukte.composefirst.presentation.detail.DetailScreen
 import com.nukte.composefirst.presentation.favorite.FavoriteScreen
 import com.nukte.composefirst.presentation.home.HomeScreen
 
-internal sealed class Screen(val route: String) {
+sealed class Screen(val route: String) {
     object Home : Screen("home")
     object Favorite : Screen("favorite")
 }

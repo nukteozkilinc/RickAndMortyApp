@@ -30,7 +30,8 @@ class DatabaseModule {
             appContext,
             CharacterDb::class.java,
             "character_table"
-        ).fallbackToDestructiveMigration().build()
+        ).fallbackToDestructiveMigration()
+            .build()
     }
 
 }

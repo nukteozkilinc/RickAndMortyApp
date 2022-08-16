@@ -1,9 +1,9 @@
 package com.nukte.composefirst.drawer
 
-import androidx.compose.ui.graphics.vector.ImageVector
+import com.nukte.composefirst.navigation.Screen
 
 data class MenuItem (
     val id : String,
-    val title : String
-    //val icon : ImageVector
+    val title : String,
+    val screen : Screen
     )
