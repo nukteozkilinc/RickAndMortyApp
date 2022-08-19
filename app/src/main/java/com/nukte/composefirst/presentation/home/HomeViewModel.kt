@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nukte.composefirst.data.CharacterDataSource
 import com.nukte.composefirst.model.Characters
+import com.nukte.composefirst.repository.CharRepository
 import com.nukte.composefirst.repository.CharRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,24 +15,30 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val characterDataSource: CharacterDataSource,
-    private val charRepository: CharRepositoryImpl
+    private val charRepository: CharRepository,
+    private val characterDataSource: CharacterDataSource
 ) : ViewModel() {
     private val charStateFlow = MutableStateFlow(HomeViewState()) //data set edebilirsin
-    val characterListFlow : StateFlow<HomeViewState> = charStateFlow
-
+    val characterListFlow: StateFlow<HomeViewState> = charStateFlow
 
     init {
         getAllCharacter()
     }
 
-    fun getAllCharacter() = viewModelScope.launch {
-       val characters = characterDataSource.getAllCharacters()
+    private fun getAllCharacter() = viewModelScope.launch {
+        val characters = characterDataSource.getAllCharacters()
         charStateFlow.update { it.copy(characterList = characters) }
     }
 
     fun saveChar(char: Characters) = viewModelScope.launch {
-        char.isSaved = true
-        charRepository.saveChar(char)
+        if (char.isSaved) {
+            char.isSaved = false
+            charRepository.unsaveChar(char.id)
+            println("${char.isSaved}")
+        } else {
+            char.isSaved = true
+            charRepository.saveChar(char)
+            println("${char.isSaved}")
+        }
     }
 }

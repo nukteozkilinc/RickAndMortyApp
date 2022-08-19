@@ -1,5 +1,6 @@
 package com.nukte.composefirst.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
@@ -7,20 +8,20 @@ import kotlinx.serialization.Serializable
 
 @Entity(tableName = "characterTable")
 @Serializable
-data class Characters (
+data class Characters(
 
-    @PrimaryKey @SerializedName("id") var id  : Int?  = null,
-    @SerializedName("name"     ) var name     : String?           = null,
-    @SerializedName("status"   ) var status   : String?           = null,
-    @SerializedName("species"  ) var species  : String?           = null,
-    @SerializedName("type"     ) var type     : String?           = null,
-    @SerializedName("gender"   ) var gender   : String?           = null,
-    @SerializedName("origin"   ) var origin   : Origin?           = Origin(),
-    @SerializedName("location" ) var location : Location?         = Location(),
-    @SerializedName("image"    ) var image    : String?           = null,
-    @SerializedName("episode"  ) var episode  : ArrayList<String> = arrayListOf(),
-    @SerializedName("url"      ) var url      : String?           = null,
-    @SerializedName("created"  ) var created  : String?           = null,
-    var isSaved : Boolean
+    @PrimaryKey var id: Int,
+    @ColumnInfo(name = "name") var name: String? = null,
+    @ColumnInfo(name = "status") var status: String? = null,
+    var species: String? = null,
+    var type: String? = null,
+    var gender: String? = null,
+    var origin: Origin? = Origin(),
+    var location: Location? = Location(),
+    var image: String? = null,
+    var episode: ArrayList<String> = arrayListOf(),
+    var url: String? = null,
+    var created: String? = null,
+    @ColumnInfo(name = "isSaved") var isSaved: Boolean
 
 )

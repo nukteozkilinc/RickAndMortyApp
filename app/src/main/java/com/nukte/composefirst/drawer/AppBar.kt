@@ -13,7 +13,7 @@ fun AppBar(
 ){
     TopAppBar(
         title = {
-            Text(text = stringResource(id = R.string.app_name))
+            Text(text = "Rick and Morty")
         },
         backgroundColor = MaterialTheme.colors.primary,
         contentColor = MaterialTheme.colors.onPrimary,

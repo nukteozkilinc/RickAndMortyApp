@@ -1,9 +1,6 @@
 package com.nukte.composefirst.db
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.nukte.composefirst.model.Characters
 
 @Dao
@@ -13,11 +10,28 @@ interface CharacterDao {
     suspend fun insert(characters: Characters)
 
     @Query("SELECT * FROM characterTable")
-    fun getAllChars() : List<Characters>
+    fun getAllCharacters() : List<Characters>
 
-    @Query ("DELETE FROM characterTable WHERE id==:id")
-    suspend fun deleteChars(id : Int)
+    @Query("DELETE FROM characterTable where id ==:id")
+    suspend fun deleteCharacters(id:Int)
 
-    @Query ("SELECT EXISTS(SELECT * FROM characterTable WHERE id ==:id)")
-    suspend fun isSavedBefore(id:Int) : Boolean
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun update(characters: Characters)
+
+    @Update
+    suspend fun updateCharacters(characters: List<Characters>)
+
+    /*@Update(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun update(characters: Characters): Int
+
+    @Query("SELECT * FROM characterTable")
+    fun getAllChars(): List<Characters>
+
+    @Query("DELETE FROM characterTable WHERE id==:id")
+    suspend fun deleteChars(id: Int)
+
+    //@Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Update
+    suspend fun updateCharacters(characters: List<Characters>)*/
+
 }

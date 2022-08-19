@@ -30,6 +30,7 @@ import com.nukte.composefirst.model.Characters
 import com.nukte.composefirst.presentation.home.ItemImage
 import com.nukte.composefirst.ui.theme.PastelGreen
 
+
 @ExperimentalFoundationApi
 @Composable
 fun FavoriteScreen(

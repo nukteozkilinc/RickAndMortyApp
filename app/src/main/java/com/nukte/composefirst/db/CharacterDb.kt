@@ -7,7 +7,7 @@ import com.nukte.composefirst.model.Characters
 
 @Database(
     entities = [Characters::class],
-    version = 2,
+    version = 3,
     exportSchema = false
     )
 @TypeConverters(

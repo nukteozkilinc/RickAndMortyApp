@@ -14,27 +14,29 @@ import com.nukte.composefirst.components.Logo
 @ExperimentalFoundationApi
 @Composable
 fun HomeScreen(
-    showDetail:(charId:Int) -> Unit,
-){
+    showDetail: (charId: Int) -> Unit,
+) {
     HomeScreen(
-        viewModel =  hiltViewModel(),
+        viewModel = hiltViewModel(),
         showDetail = showDetail,
     )
 }
 
 @Composable
 internal fun HomeScreen(
-    viewModel : HomeViewModel,
-    showDetail:(charId:Int) -> Unit
-){
+    viewModel: HomeViewModel,
+    showDetail: (charId: Int) -> Unit
+) {
     val viewState by viewModel.characterListFlow.collectAsState()
 
-    Column (
+    Column(
         modifier = Modifier.fillMaxSize()
-    ){
+    ) {
         Logo(
             modifier = Modifier.fillMaxWidth()
         )
-        Content(character = viewState.characterList,showDetail,viewModel)
+        Content(character = viewState.characterList, showDetail = showDetail, onSaveClicked = {
+            viewModel.saveChar(it)
+        })
     }
 }

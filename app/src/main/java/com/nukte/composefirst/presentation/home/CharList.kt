@@ -18,14 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onPlaced
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import com.nukte.composefirst.R
 import com.nukte.composefirst.model.Characters
 import com.nukte.composefirst.ui.theme.PastelGreen
 
@@ -33,16 +30,17 @@ import com.nukte.composefirst.ui.theme.PastelGreen
 @Composable
 fun Content(
     character: List<Characters>,
-    showDetail:(charId:Int) -> Unit,
-    homeViewModel: HomeViewModel
-    ) {
-    //Item(character)
+    showDetail: (charId: Int) -> Unit,
+    onSaveClicked: (characters: Characters) -> Unit
+) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 300.dp),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
     ) {
         items(character) {
-            ItemCard(character = it,showDetail, homeViewModel)
+            ItemCard(character = it, showDetail = showDetail, onSaveClicked = { character ->
+                onSaveClicked(character)
+            })
         }
     }
 }
@@ -64,10 +62,10 @@ fun ItemImage(image: String, modifier: Modifier) {
 fun ItemCard(
     character: Characters,
     // openUser: () -> Unit,
-    showDetail:(charId:Int) -> Unit,
-    homeViewModel: HomeViewModel,
+    showDetail: (charId: Int) -> Unit,
+    onSaveClicked: (characters: Characters) -> Unit,
     alignment: Alignment.Horizontal = Alignment.Start,
-    ) {
+) {
     Card(
         //onClick = openUser,
         modifier = Modifier
@@ -84,9 +82,10 @@ fun ItemCard(
         }
         Row {
             character.image?.let {
-                ItemImage(image = it, modifier = Modifier
-                    .height(150.dp)
-                    .fillMaxWidth(0.40f)
+                ItemImage(
+                    image = it, modifier = Modifier
+                        .height(150.dp)
+                        .fillMaxWidth(0.40f)
                 )
             }
             Column(
@@ -94,14 +93,15 @@ fun ItemCard(
                     .padding(8.dp)
                     .animateContentSize()
                     .fillMaxWidth()
-                    .fillMaxHeight(),
-                horizontalAlignment = alignment
+                    .fillMaxHeight(), horizontalAlignment = alignment
             ) {
                 character.name?.let {
-                    Text(text = it,
+                    Text(
+                        text = it,
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 16.sp,
-                        overflow = TextOverflow.Ellipsis)
+                        overflow = TextOverflow.Ellipsis
+                    )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 character.origin?.name?.let { Text(text = it) }
@@ -112,19 +112,23 @@ fun ItemCard(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Box(modifier = Modifier
-                        .size(10.dp)
-                        .background(color = color, shape = CircleShape)
+                    Box(
+                        modifier = Modifier
+                            .size(10.dp)
+                            .background(color = color, shape = CircleShape)
                     )
                     character.status?.let { Text(text = it) }
                     Spacer(modifier = Modifier.width(5.dp))
-                    Button(
-                        modifier = Modifier.padding(5.dp)
-                            .background(PastelGreen)
-                        ,
-                        onClick = {homeViewModel.saveChar(character)}
-                    ){
-                        Text(text = "Save")
+                    Button(modifier = Modifier
+                        .padding(5.dp)
+                        .background(PastelGreen),
+                        onClick = { onSaveClicked(character) }) {
+                        if (character.isSaved) {
+                            Text(text = "Saved")
+                        } else {
+                            Text(text = "Save")
+                        }
+
                     }
                 }
 
